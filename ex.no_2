@@ -1,0 +1,106 @@
+class Node:
+    def __init__(self, song):
+        self.song = song
+        self.next = None
+
+
+class Playlist:
+    def __init__(self):
+        self.head = None
+
+    # Create playlist / Add at end
+    def create(self, song):
+        new_node = Node(song)
+        if self.head is None:
+            self.head = new_node
+        else:
+            temp = self.head
+            while temp.next:
+                temp = temp.next
+            temp.next = new_node
+
+    # Insert song at beginning
+    def insert_begin(self, song):
+        new_node = Node(song)
+        new_node.next = self.head
+        self.head = new_node
+
+    # Insert song at end
+    def insert_end(self, song):
+        self.create(song)
+
+    # Delete a song
+    def delete(self, song):
+        temp = self.head
+
+        if temp and temp.song == song:
+            self.head = temp.next
+            print("Song deleted.")
+            return
+
+        prev = None
+        while temp and temp.song != song:
+            prev = temp
+            temp = temp.next
+
+        if temp is None:
+            print("Song not found.")
+            return
+
+        prev.next = temp.next
+        print("Song deleted.")
+
+    # Display playlist
+    def display(self):
+        if self.head is None:
+            print("Playlist is empty.")
+        else:
+            temp = self.head
+            print("\nPlaylist:")
+            while temp:
+                print(temp.song, end=" -> ")
+                temp = temp.next
+            print("None")
+
+
+# Main Program
+playlist = Playlist()
+
+while True:
+    print("\n--- Music Playlist Menu ---")
+    print("1. Create Playlist")
+    print("2. Insert Song at Beginning")
+    print("3. Insert Song at End")
+    print("4. Delete Song")
+    print("5. Display Playlist")
+    print("6. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        n = int(input("Enter number of songs: "))
+        for i in range(n):
+            song = input("Enter song name: ")
+            playlist.create(song)
+
+    elif choice == 2:
+        song = input("Enter song name: ")
+        playlist.insert_begin(song)
+
+    elif choice == 3:
+        song = input("Enter song name: ")
+        playlist.insert_end(song)
+
+    elif choice == 4:
+        song = input("Enter song name to delete: ")
+        playlist.delete(song)
+
+    elif choice == 5:
+        playlist.display()
+
+    elif choice == 6:
+        print("Exiting...")
+        break
+
+    else:
+        print("Invalid Choice!")
