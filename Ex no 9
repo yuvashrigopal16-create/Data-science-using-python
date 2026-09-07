@@ -1,0 +1,40 @@
+Inorder)")
+        print("5. Count Total Enrollments")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == '1':
+            e_id = int(input("Enter Enrollment ID: "))
+            name = input("Enter Student Name: ")
+            root = tree.insert(root, e_id, name)
+            print("Record inserted successfully!")
+
+        elif choice == '2':
+            e_id = int(input("Enter Enrollment ID to delete: "))
+            root = tree.delete(root, e_id)
+
+        elif choice == '3':
+            e_id = int(input("Enter Enrollment ID to search: "))
+            result = tree.search(root, e_id)
+            if result:
+                print(f"Record Found -> ID: {result.enroll_id}, Name: {result.name}")
+            else:
+                print("Record not found!")
+
+        elif choice == '4':
+            print("\n--- Sorted Student Records ---")
+            if root is None:
+                print("No records available.")
+            else:
+                tree.inorder(root)
+
+        elif choice == '5':
+            total = tree.count_nodes(root)
+            print(f"Total Enrollments: {total}")
+
+        elif choice == '6':
+            print("Exiting Program...")
+            break
+        else:
+            print("Invalid Choice! Please enter a number between 1 and 6.")
