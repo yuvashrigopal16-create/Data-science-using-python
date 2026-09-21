@@ -1,0 +1,82 @@
+class SocialNetworkGraph:
+    def __init__(self, num_users):
+        self.num_users = num_users
+        # Initialize Adjacency Matrix with zeros (num_users x num_users)
+        self.adj_matrix = [[0] * num_users for _ in range(num_users)]
+        # Initialize Adjacency List as a dictionary of lists
+        self.adj_list = {i: [] for i in range(num_users)}
+
+    def add_connection(self, u, v):
+        """Adds an undirected edge between user u and user v."""
+        if 0 <= u < self.num_users and 0 <= v < self.num_users:
+            # Update Adjacency Matrix (assuming undirected graph for friendships)
+            self.adj_matrix[u][v] = 1
+            self.adj_matrix[v][u] = 1
+
+            # Update Adjacency List
+            if v not in self.adj_list[u]:
+                self.adj_list[u].append(v)
+            if u not in self.adj_list[v]:
+                self.adj_list[v].append(u)
+        else:
+            print(f"Error: Invalid user IDs ({u}, {v}). Users must be between 0 and {self.num_users - 1}.")
+
+    def display_representations(self):
+        """Displays both Adjacency Matrix and Adjacency List."""
+        print("\n--- Adjacency Matrix ---")
+        # Print column headers
+        header = "   " + " ".join([str(i) for i in range(self.num_users)])
+        print(header)
+        print("  " + "-" * (len(header) - 2))
+        for i, row in enumerate(self.adj_matrix):
+            print(f"{i} | " + " ".join([str(val) for val in row]))
+
+        print("\n--- Adjacency List ---")
+        for user, connections in self.adj_list.items():
+            print(f"User {user}: -> {connections}")
+
+    def check_connection(self, u, v):
+        """Checks if two users are directly connected using both representations."""
+        if not (0 <= u < self.num_users and 0 <= v < self.num_users):
+            print(f"Error: Invalid user IDs ({u}, {v}).")
+            return
+
+        print(f"\n--- Querying Connection Between User {u} and User {v} ---")
+
+        # 1. Query Adjacency Matrix
+        matrix_result = self.adj_matrix[u][v] == 1
+        print(f"1. Adjacency Matrix Check: {'Connected (Friends)' if matrix_result else 'Not Connected'}")
+
+        # 2. Query Adjacency List
+        list_result = v in self.adj_list[u]
+        print(f"2. Adjacency List Check:   {'Connected (Friends)' if list_result else 'Not Connected'}")
+
+
+# --- Main Program Execution ---
+if __name__ == "__main__":
+    print("=== Social Network Graph Representation ===")
+    
+    # 1. Input the total number of users
+    num_users = int(input("Enter the total number of users: "))
+    network = SocialNetworkGraph(num_users)
+
+    # 2. Input the list of connections (friendships)
+    num_connections = int(input("Enter the total number of friendships to add: "))
+    print("Enter the friendships as space-separated pairs (e.g., 0 1):")
+    for _ in range(num_connections):
+        u, v = map(int, input().split())
+        network.add_connection(u, v)
+
+    # 3. Display the network representation in both formats
+    network.display_representations()
+
+    # 4. Allow the admin to check if two users are directly connected
+    print("\n--- Connection Query Tool ---")
+    while True:
+        choice = input("Do you want to check a connection? (y/n): ").strip().lower()
+        if choice != 'y':
+            break
+        u, v = map(int, input("Enter two user IDs to check (e.g., 0 2): ").split())
+        network.check_connection(u, v)
+
+    print("\nProgram finished successfully!")
