@@ -1,0 +1,38 @@
+def linear_search(a, key):
+    for i in range(len(a)):
+        if a[i] == key:
+            return i
+    return -1
+
+def binary_search(a, key):
+    low = 0
+    high = len(a) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+
+        if a[mid] == key:
+            return mid
+        elif a[mid] < key:
+            low = mid + 1
+        else:
+            high = mid - 1
+
+    return -1
+
+n = int(input("Enter number of students: "))
+a = list(map(int, input("Enter roll numbers in sorted order: ").split()))
+key = int(input("Enter roll number to search: "))
+
+l = linear_search(a, key)
+b = binary_search(a, key)
+
+if l != -1:
+    print("Linear Search: Roll number found")
+else:
+    print("Linear Search: Roll number not found")
+
+if b != -1:
+    print("Binary Search: Roll number found")
+else:
+    print("Binary Search: Roll number not found")
